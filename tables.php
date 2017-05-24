@@ -1,13 +1,10 @@
 ﻿<?php
+session_start();
 include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
 // Get form data
 // define variables and set to empty values
 $number = 100;
-session_unset();
-session_start();
-
-$_SESSION['table'] = "INDICIA_PUBLISHER";
 
 $query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
 $num_rows=mysqli_query($link,$query_count); // number of rows
@@ -17,7 +14,7 @@ $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST["numRows"]))
         $number = $_POST["numRows"];
-        $_SESSION['table']= $_POST["table"];
+    $_SESSION['table']= $_POST["table"];
     if(isset($_POST["delete"])){
         $query="DELETE FROM ".$_SESSION['table']." WHERE ID=\"".$_POST["id"]."\"";
         $result= mysqli_query($link, $query);
@@ -32,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
 $query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
 $num_rows=mysqli_query($link,$query_count); // number of rows
 $data=mysqli_fetch_assoc($num_rows);
@@ -61,11 +59,11 @@ printf("<!--Limit shown number of rows-->
                     <label class='control-label col-sm-4' for='form-control'>Table:</label>
                     <div class=\"col-sm-8\">
                         <select class='form-control' id='form-control' name='table' onchange='this.form.submit()'>");
-                        for($i=0;$i<count($tables);$i++){
-                            printf("
+for($i=0;$i<count($tables);$i++){
+    printf("
                             <option value='".$tables[$i]."' ".(($_SESSION['table']==$tables[$i])?'selected="selected"':"").">".$tables_label[$i]."</option>");
-                        }
-                        printf("
+}
+printf("
                         </select>
                     </div>
                 </div>

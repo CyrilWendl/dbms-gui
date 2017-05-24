@@ -9,7 +9,6 @@ include 'connect.php'; // MySQL connection
 $submitted = FALSE;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
-    $id = $_POST["id"];
     $_SESSION['table'] = $_POST["table"];
     if (isset($_POST["submitted"])) {
         $submitted = TRUE;
@@ -18,11 +17,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
         $colValue = array_values($cols);
         $colName = array_keys($cols);
         $id = $colValue[0];
-        $query = "UPDATE " . $_SESSION['table'] . " SET ";
-        for ($i = 1; $i < count($colName); $i++) {
-            $query .= $colName[$i] . " = \"" . $colValue[$i] . (($i == count($colName) - 1) ? "\"" : "\",") . " ";
+        // syntax: INSERT INTO table_name (column1, column2, column3, ...)
+        //         VALUES (value1, value2, value3, ...);
+        $query = "INSERT INTO " . $_SESSION['table'] . " (";
+        for ($i = 0; $i < count($colName); $i++) {
+            $query .= $colName[$i].(($i == count($colName) - 1) ? "" : ",");
         }
-        $query .= " WHERE ID=\"" . $colValue[0] . "\"";
+        $query.= ")\n VALUES (";
+        for ($i = 0; $i < count($colName); $i++) {
+            if($colValue!=''){
+                $query .= "'".$colValue[$i]."'";
+            }else{
+                $query .= '\'\'';
+            }
+            $query .= (($i == count($colName) - 1) ? "" : ",");
+        }
+        echo $query .=")";
+
         $result = mysqli_query($link, $query);
         if (false === $result) {
             printf("error: %s\n", mysqli_error($con));
@@ -39,13 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
     }
 }
 
-switch($_SESSION['table']){
-    case "INDICIA_PUBLISHER":
-        $input=array("number","text","number","number","number","number","number","text","text");
-}
-
-$query = "SELECT * FROM " . $_SESSION['table'] . " WHERE id=\"" . $id . "\"";
-printf("<h1><i class=\"icon-flag\"></i> Modify tuple from " . ucwords(str_replace('_', ' ', strtolower($_SESSION['table']))) . " <span class=\"badge\" data-toggle=\"tooltip\" title=\"\">" . $data['total'] . "</span></h1><br>");
+$query = "SELECT * FROM " . $_SESSION['table'] ." LIMIT 1";
+printf("<h1><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span> Insert tuple into " . ucwords(str_replace('_', ' ', strtolower($_SESSION['table']))) . " <span class=\"badge\" data-toggle=\"tooltip\" title=\"\">" . $data['total'] . "</span></h1><br>");
 printf("
 <div class=\"row\">
     <div class='col-sm-8'>\n");
@@ -59,9 +65,9 @@ if (false === $result) {
         $name[] = $finfo->name;
     }
     while ($row = mysqli_fetch_array($result)) {
-        for ($i = 0; $i < count($row) / 2; $i++) {
+        for ($i = 1; $i < count($row) / 2; $i++) {
             printf("\t\t\t<label class=\"control-label col-sm-2\" for=\"row[%s]\">%s</label>\n",$name[$i], $name[$i]);
-            printf("\t\t\t<div class=\"col-sm-10\"><input class=\"form-control\" type=\"text\" ".(($i==0)?'readonly':'')." name=\"row[" . $name[$i] . "]\" value=\"" . $row[$i] . "\" id=\"row[" . $name[$i] . "]\"></div>\n");
+            printf("\t\t\t<div class=\"col-sm-10\"><input class=\"form-control\" type=\"text\"  name=\"row[" . $name[$i] . "]\" id=\"row[" . $name[$i] . "]\"></div>\n");
         }
         $nCols=count($row)/2;
         printf("\t\t\t<br><br><input type='hidden' name='table' id='table' value='".$_SESSION['table']."'>
@@ -74,6 +80,7 @@ if (false === $result) {
 printf("</div>
     <div class=\"col-sm-3 well\" id=\"SQL-panel\">
         <h4>SQL command</h4>
+        To be fixed. <!--TODO fix-->
         <code><span id='sqlcode'></span></code>
     </div>
 </div>\n");

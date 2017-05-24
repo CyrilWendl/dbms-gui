@@ -119,10 +119,9 @@
             }
             jQuery.fn.exists = function(){ return this.length > 0; }
 
-            //$( ":text, :radio" ).on("input", showValues );
-            $( "input, select, option, button" ).on("input", query );
+            $( ":text, :radio" ).on("input", showValues );
+            $( ".sqlInput, select, option, button" ).on("input", query );
             $("select,checkbox,.toggle").change(query);
-            $(".toggle").onclick(query);
 
             $("#showSQL").click(function(){
                 $("#SQL-panel").slideToggle();
@@ -161,13 +160,7 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li class="#"><a href="?Table=Languages"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Languages</a></li>
-                        <li class="todo"><a href="?Table=Stories"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Stories</a></li>
-                        <li class="todo"><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Publisher</a></li>
-                    </ul>
+                    <a href="add.php"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</a>
                 </li>
                 <li class="#"><!--TODO implement-->
                     <a href="#">

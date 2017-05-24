@@ -18,9 +18,6 @@ $data=mysqli_fetch_assoc($num_rows);
 $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows in the beginning
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_POST['queryfields_minus'])){
-        $queryfields--;
-    }
     if(isset($_POST['add'])){
         $_SESSION['queryfields']++;
     }
@@ -128,12 +125,21 @@ for($i=0;$i<count($tables_label);$i++) {
 </form>
 <div class="row">
     <div class="col-sm-offset-8 col-sm-4">
-        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-            <button type="submit" class="btn btn-default" name="add" value="add"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-        </form>
-        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-            <button type="submit" class="btn btn-default" name="minus" value="minus"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
-        </form>
+        <?php
+        $ncols=mysqli_num_fields(mysqli_query($link,"SELECT * FROM ". $_SESSION['table'] ." LIMIT 10"));
+        if($ncols>$_SESSION['queryfields']){
+            printf("
+        <form action=\"".$_SERVER['PHP_SELF']."\" method=\"POST\">
+            <button type=\"submit\" class=\"btn btn-default\" name=\"add\" value=\"add\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>
+        </form>");
+        }
+        if($_SESSION['queryfields']>1){
+            printf("
+        <form action=\"". $_SERVER['PHP_SELF'] ."\" method=\"POST\">
+            <button type=\"submit\" class=\"btn btn-default\" name=\"minus\" value=\"minus\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span></button>
+        </form>");
+        }
+        ?>
     </div>
 </div>
 
