@@ -78,7 +78,11 @@
                     fname_before=fname_before.substr(0,fstart-1);
                     if(field.name!="table" && field.name!="numRows" && fname_before!="fieldselect" && field.value!=''){
                         queryterms_Fields.push(fname_after);
-                        queryterms_Values.push(field.value);
+                        if(field.value==100){
+                            queryterms_Values.push("💯");
+                        }else{
+                            queryterms_Values.push(field.value);
+                        }
                     }
                     if(fname_before=="fieldselect") {
                         // get selected value
