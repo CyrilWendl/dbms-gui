@@ -7,6 +7,11 @@ include 'connect.php'; // MySQL connection
 // Get form data
 // define variables and set to empty values
 $submitted = FALSE;
+$tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters","Colors");
+
+for($i=0;$i<count($tables_label);$i++) {
+    $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
     $_SESSION['table'] = $_POST["table"];
@@ -49,6 +54,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
         }
     }
 }
+
+// Limit shown number of rows
+printf("<!--Limit shown number of rows-->
+    <div class='row'>
+        <div class='col-sm-6'>
+            <form class='form-horizontal' id='numForm' action='".  $_SERVER["PHP_SELF"] ."' method='POST'>
+                <div class='form-group'>
+                    <label class='control-label col-sm-4' for='form-control'>Table:</label>
+                    <div class=\"col-sm-8\">
+                        <select class='form-control' id='form-control' name='table' onchange='this.form.submit()'>");
+for($i=0;$i<count($tables);$i++){
+    printf("
+                            <option value='".$tables[$i]."' ".(($_SESSION['table']==$tables[$i])?'selected="selected"':"").">".$tables_label[$i]."</option>");
+}
+printf("
+                        </select>
+                    </div>
+                </div>
+                <div class=\"form-group\">        
+                    <div class=\"col-sm-offset-4 col-sm-8\">
+                        <button type='submit' class='btn btn-default'>Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+<br>");
 
 $query = "SELECT * FROM " . $_SESSION['table'] ." LIMIT 1";
 printf("<h1><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span> Insert tuple into " . ucwords(str_replace('_', ' ', strtolower($_SESSION['table']))) . " <span class=\"badge\" data-toggle=\"tooltip\" title=\"\">" . $data['total'] . "</span></h1><br>");
