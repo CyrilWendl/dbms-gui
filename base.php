@@ -37,24 +37,64 @@
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
 
-            function showValues() {
+            function sql_update() {
                 var fields = $( "#numForm" ).serializeArray();
                 $("#sqlcode").empty();
                 var query ="";
                 var table = $("#table").attr("value");
+                var query_fields = [];
+                var query_values = [];
                 query += "UPDATE " + table + " SET ";
+
                 jQuery.each( fields, function( i, field ) {
                     var fname=field.name;
                     var fstart=fname.indexOf("[")+1;
                     var fend = fname.indexOf("]")-fstart;
                     fname=fname.substr(fstart,fend);
                     if(field.name!="table" && field.name!="numCols"){
-                        query += fname+"=\""+field.value+"\", ";
+                        query_fields.push(fname);
+                        query_values.push(field.value);
                     }
                 });
-                query=query.slice(0,-2);
+                for(var i=0;i<query_values.length;i++){
+                    query+=query_fields[i];
+                    query+=" = \"";
+                    query+=query_values[i];
+                    (i==query_values.length-1)?query+='\"':query+="\", ";
+                }
                 query += " WHERE ID=\""+fields[0].value+"\"";
                 $("#sqlcode").append(query);
+            }
+
+            function sql_add() {
+                var fields = $( "#numForm" ).serializeArray();
+                $("#sqlcode_add").empty();
+                var query ="";
+                var table = $("#table").attr("value");
+                var query_fields = [];
+                var query_values = [];
+                query += "INSERT INTO " + table + " (";
+
+                jQuery.each( fields, function( i, field ) {
+                    var fname=field.name;
+                    var fstart=fname.indexOf("[")+1;
+                    var fend = fname.indexOf("]")-fstart;
+                    fname=fname.substr(fstart,fend);
+                    if(field.name!="table" && field.name!="numCols"){
+                        query_fields.push(fname);
+                        query_values.push(field.value);
+                    }
+                });
+                for(var i=0;i<query_fields.length;i++){
+                    query+=query_fields[i];
+                    (i==query_values.length-1)?query+=') ':query+=", ";
+                }
+                query+="SET VALUES (";
+                for(var i=0;i<query_values.length;i++){
+                    query+='\'' + query_values[i];
+                    (i==query_values.length-1)?query+='\')':query+="', ";
+                }
+                $("#sqlcode_add").append(query);
             }
 
 
@@ -119,7 +159,8 @@
             }
             jQuery.fn.exists = function(){ return this.length > 0; }
 
-            $( ":text, :radio" ).on("input", showValues );
+            $( ":text, :radio" ).on("input", sql_update );
+            $( ":text, :radio" ).on("input", sql_add );
             $( ".sqlInput, select, option, button" ).on("input", query );
             $("select,checkbox,.toggle").change(query);
 

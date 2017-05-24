@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
 printf("<!--Limit shown number of rows-->
     <div class='row'>
         <div class='col-sm-6'>
-            <form class='form-horizontal' id='numForm' action='".  $_SERVER["PHP_SELF"] ."' method='POST'>
+            <form class='form-horizontal' action='".  $_SERVER["PHP_SELF"] ."' method='POST'>
                 <div class='form-group'>
                     <label class='control-label col-sm-4' for='form-control'>Table:</label>
                     <div class=\"col-sm-8\">
@@ -113,8 +113,7 @@ if (false === $result) {
 printf("</div>
     <div class=\"col-sm-3 well\" id=\"SQL-panel\">
         <h4>SQL command</h4>
-        To be fixed. <!--TODO fix-->
-        <code><span id='sqlcode'></span></code>
+        <code><span id='sqlcode_add'></span></code>
     </div>
 </div>\n");
 
