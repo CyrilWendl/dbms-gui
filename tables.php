@@ -4,9 +4,12 @@ include 'connect.php'; // MySQL connection
 // Get form data
 // define variables and set to empty values
 $number = 100;
-$table = "INDICIA_PUBLISHER";
+session_unset();
+session_start();
 
-$query_count="SELECT COUNT(*) AS total FROM ".$table;
+$_SESSION['table'] = "INDICIA_PUBLISHER";
+
+$query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
 $num_rows=mysqli_query($link,$query_count); // number of rows
 $data=mysqli_fetch_assoc($num_rows);
 $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows in the beginning
@@ -14,9 +17,9 @@ $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST["numRows"]))
         $number = $_POST["numRows"];
-        $table= $_POST["table"];
+        $_SESSION['table']= $_POST["table"];
     if(isset($_POST["delete"])){
-        $query="DELETE FROM ".$table." WHERE ID=\"".$_POST["id"]."\"";
+        $query="DELETE FROM ".$_SESSION['table']." WHERE ID=\"".$_POST["id"]."\"";
         $result= mysqli_query($link, $query);
         if ( false===$result) {
             printf("error: %s\n", mysqli_error($con));
@@ -29,11 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-$query_count="SELECT COUNT(*) AS total FROM ".$table;
+$query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
 $num_rows=mysqli_query($link,$query_count); // number of rows
 $data=mysqli_fetch_assoc($num_rows);
 
-$query="SELECT * FROM ".$table." LIMIT ".$number;
+$query="SELECT * FROM ".$_SESSION['table']." LIMIT ".$number;
 
 $tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters","Colors");
 
@@ -44,7 +47,7 @@ for($i=0;$i<count($tables_label);$i++) {
 
 // Limit shown number of rows
 printf("<!--Limit shown number of rows-->
-<h1><span class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></span> ".ucwords(str_replace('_',' ',strtolower($table)))." <span class='badge' data-toggle='tooltip' title=''>".$data['total']."</span></h1>
+<h1><span class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></span> ".ucwords(str_replace('_',' ',strtolower($_SESSION['table'])))." <span class='badge' data-toggle='tooltip' title=''>".$data['total']."</span></h1>
     <div class='row'>
         <div class='col-sm-6'>
             <form class='form-horizontal' id='numForm' action='".  $_SERVER["PHP_SELF"] ."' method='POST'>
@@ -57,10 +60,10 @@ printf("<!--Limit shown number of rows-->
                 <div class='form-group'>
                     <label class='control-label col-sm-4' for='form-control'>Table:</label>
                     <div class=\"col-sm-8\">
-                        <select class='form-control' id='form-control' name='table'>");
+                        <select class='form-control' id='form-control' name='table' onchange='this.form.submit()'>");
                         for($i=0;$i<count($tables);$i++){
                             printf("
-                            <option value='".$tables[$i]."' ".(($table==$tables[$i])?'selected="selected"':"").">".$tables_label[$i]."</option>");
+                            <option value='".$tables[$i]."' ".(($_SESSION['table']==$tables[$i])?'selected="selected"':"").">".$tables_label[$i]."</option>");
                         }
                         printf("
                         </select>
@@ -75,7 +78,7 @@ printf("<!--Limit shown number of rows-->
         </div>
         <div class='col-sm-4 well'>
             <h4>SQL code:</h4>
-            <code class='code'>SELECT * FROM ".$table. " LIMIT ".$number."</code>
+            <code class='code'>SELECT * FROM ".$_SESSION['table']. " LIMIT ".$number."</code>
         </div>
     </div>
     

@@ -69,8 +69,11 @@ switch($table){
         </form>\n");
         }
     }
-    printf("    </div>
-    <div class=\"col-sm-3 well\" id=\"SQL-panel\"><h4>SQL command</h4><code><span id='sqlcode'></span></code></div>
+    printf("</div>
+    <div class=\"col-sm-3 well\" id=\"SQL-panel\">
+        <h4>SQL command</h4>
+        <code><span id='sqlcode'></span></code>
+    </div>
 </div>\n");
 
 ?>

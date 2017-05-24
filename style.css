@@ -19,6 +19,27 @@ body{
     margin-bottom:0px;
 }
 
-/*#SQL-panel{
-    display:none;
-}*/
+.form-control{
+    background:transparent;
+    border-bottom: 1px solid black !important;
+    border: none;
+}
+.form-control:focus{
+    border-bottom: 1px solid lightgray !important;
+}
+select, input, textarea, button {
+    contour:none !important;
+    box-shadow:none !important;
+}
+
+.well{
+    background-color:transparent;
+}
+
+.slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+.toggle.ios .toggle-handle { border-radius: 20px; }
+
+#SQL-select{
+    /*display:none;*/
+}

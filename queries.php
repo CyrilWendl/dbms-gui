@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$result=mysqli_query($link,"SELECT COUNT(*) AS total FROM ".$table); // number of rows
+$result=mysqli_query($link,"SELECT COUNT(*) AS total FROM ".$_SESSION_TABLE); // number of rows
 $data=mysqli_fetch_assoc($result);
 $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows in the beginning
 
-$query="SELECT * FROM ".$table." LIMIT ".$number;
+$query="SELECT * FROM ".$_SESSION_TABLE." LIMIT ".$number;
 
 
 $tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters");

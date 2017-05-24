@@ -10,4 +10,3 @@ $link = @mysqli_connect($dbhost,$dbuser,$dbpass) or die ("<div class=\"alert ale
 @mysqli_select_db($link, $dbname) or die ("<div class=\"alert alert-danger\">
   <strong>No such database</strong> 
 </div>");
-?>

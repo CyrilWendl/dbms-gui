@@ -10,7 +10,7 @@ printf("\t\t\t<input type=\"hidden\" name=\"label_" . $i . "\" value=\"" . $name
 printf("\t\t\t<input class=\"form-control\" type=\"text\" ".(($i==0)?'readonly':'')." name=\"" . $i . "\" value=\"" . $row[$i] . "\"><br>\n");
 }
 $nCols=count($row)/2;
-printf("\t\t\t<input type='hidden' name='table' id='table' value='".$table."'>
+printf("\t\t\t<input type='hidden' name='table' id='table' value='".$_SESSION_TABLE."'>
 <input type='hidden' name='numCols' value='".$nCols."'>
 <div class=\"well\" id=\"SQL-panel\"></div>
 <input type=\"submit\" name='submitted' class=\"btn btn-primary\" value='Update'>
