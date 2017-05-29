@@ -16,5 +16,3 @@ printf("\t\t\t<input type='hidden' name='table' id='table' value='".$_SESSION_TA
 <input type=\"submit\" name='submitted' class=\"btn btn-primary\" value='Update'>
 <button type=\"button\" class=\"btn btn-info\" id=\"showSQL\">Show SQL command</button>
 </form>\n");
-
-?>

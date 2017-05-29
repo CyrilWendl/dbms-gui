@@ -1,17 +1,9 @@
 ﻿<?php
-session_start();
-//session_unset();
-include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
 
 // Get form data
 // define variables and set to empty values
 $submitted = FALSE;
-$tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters","Colors");
-
-for($i=0;$i<count($tables_label);$i++) {
-    $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
     $_SESSION['table'] = $_POST["table"];
@@ -54,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
         }
     }
 }
+include 'base.php'; // Base template
 
 // Limit shown number of rows
 printf("<!--Limit shown number of rows-->
@@ -92,7 +85,6 @@ $result = mysqli_query($link, $query);
 if (false === $result) {
     printf("error: %s\n", mysqli_error($con));
 } else { // print the query results
-    // TODO externalize form
     printf("\t\t<form class=\"form-horizontal\" id=\"numForm\" action=\"" . $_SERVER["PHP_SELF"] . "\" method=\"POST\">\n");
     while ($finfo = $result->fetch_field()) {
         $name[] = $finfo->name;

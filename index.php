@@ -1,11 +1,9 @@
 <?php
-include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
-$tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters","Colors");
+include 'base.php'; // Base template
+session_unset();
+session_destroy();
 
-for($i=0;$i<count($tables_label);$i++) {
-    $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
-}
 printf("<div class=\"container\">
     <h2>Tables</h2>");
 for($i=0;$i<count($tables);$i++){

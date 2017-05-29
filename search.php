@@ -1,15 +1,9 @@
 <?php
-session_start();
-//session_unset();
-include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
 
 // Get form data
 // define variables and set to empty values
 $number = 100;
-if(!isset($_SESSION['table'])){
-    $_SESSION['table'] = "INDICIA_PUBLISHER";
-}
 $_SESSION['queryfields'] = ((isset($_SESSION['queryfields'])) ? $_SESSION['queryfields'] : 3);
 
 $query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
@@ -32,8 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST["numRows"]))
         $number = $_POST["numRows"];
     if(isset($_POST["table"]))
-        $_SESSION['table']= $_POST["table"];
+        $_SESSION['table']= $_POST['table'];
     if(isset($_POST["delete"])){
+        include 'base.php'; // Base template
         $query="DELETE FROM ".$_SESSION['table']." WHERE ID=\"".$_POST["id"]."\"";
         $result= mysqli_query($link, $query);
         if ( false===$result) {
@@ -47,18 +42,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+include 'base.php'; // Base template
 $query_count="SELECT COUNT(*) AS total FROM ".$_SESSION['table'];
 $num_rows=mysqli_query($link,$query_count); // number of rows
 $data=mysqli_fetch_assoc($num_rows);
 
 if(!isset($query))
     $query="SELECT * FROM ".$_SESSION['table']." LIMIT ".$number;
-
-$tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters","Colors");
-
-for($i=0;$i<count($tables_label);$i++) {
-    $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
-}
 
 
 ?>
@@ -78,7 +68,7 @@ for($i=0;$i<count($tables_label);$i++) {
             </div>
             <label class='control-label col-sm-2' for='numRows'>Number of rows to show:</label>
             <div class="col-sm-2">
-                <input type='number' class='form-control'  name='numRows' id='numRows' value='100' max='". $data["total"] ."'>
+                <input type='number' class='form-control numRows'  name='numRows' id='numRows' value='100' max='". $data["total"] ."'>
             </div>
 
         </div>

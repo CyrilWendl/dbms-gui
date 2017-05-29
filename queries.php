@@ -1,6 +1,7 @@
 ﻿<?php
-include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
+include 'base.php'; // Base template
+
 // Get form data
 // define variables and set to empty values
 $NUMQUERIES=9;
@@ -13,18 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$result=mysqli_query($link,"SELECT COUNT(*) AS total FROM ".$_SESSION_TABLE); // number of rows
+
+
+$result=mysqli_query($link,"SELECT COUNT(*) AS total FROM ".$_SESSION['table']); // number of rows
 $data=mysqli_fetch_assoc($result);
 $data['total']<100?$number=$data['total']:$number=100; // show at most 100 rows in the beginning
 
-$query="SELECT * FROM ".$_SESSION_TABLE." LIMIT ".$number;
+$query="SELECT * FROM ".$_SESSION['table']." LIMIT ".$number;
 
-
-$tables_label=array("Stories","Language","Issue", "Indicia Publisher","Letters","Pencils","Publisher","Brand Group","Characters");
-
-for($i=0;$i<count($tables_label);$i++) {
-    $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
-}
 
 
 printf("

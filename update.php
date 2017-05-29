@@ -1,8 +1,6 @@
 ﻿<?php
-session_start();
-//session_unset();
-include 'base.php'; // Base template
 include 'connect.php'; // MySQL connection
+include 'base.php'; // Base template
 
 // Get form data
 // define variables and set to empty values
@@ -39,11 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {// from form on tables.php
     }
 }
 
-switch($_SESSION['table']){
-    case "INDICIA_PUBLISHER":
-        $input=array("number","text","number","number","number","number","number","text","text");
-}
-
 $query = "SELECT * FROM " . $_SESSION['table'] . " WHERE id=\"" . $id . "\"";
 printf("<h1><i class=\"icon-flag\"></i> Modify tuple from " . ucwords(str_replace('_', ' ', strtolower($_SESSION['table']))) . " <span class=\"badge\" data-toggle=\"tooltip\" title=\"\">" . $data['total'] . "</span></h1><br>");
 printf("
@@ -53,7 +46,6 @@ $result = mysqli_query($link, $query);
 if (false === $result) {
     printf("error: %s\n", mysqli_error($con));
 } else { // print the query results
-    // TODO externalize form
     printf("\t\t<form class=\"form-horizontal\" id=\"numForm\" action=\"" . $_SERVER["PHP_SELF"] . "\" method=\"POST\">\n");
     while ($finfo = $result->fetch_field()) {
         $name[] = $finfo->name;
