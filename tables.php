@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['table']= $_POST['table'];
     if(isset($_POST["numRows"])){
         $number = $_POST["numRows"];
-    }
+    }//...
     if(isset($_POST["delete"])){
         $query="DELETE FROM ".$_SESSION['table']." WHERE ID=\"".$_POST["id"]."\"";
         $result= mysqli_query($link, $query);

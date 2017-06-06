@@ -55,21 +55,18 @@ $QUERIES=array("SELECT BG.ID, BG.NAME,COUNT(*) "//a
     "SELECT S.name "// c
     . "FROM SERIES_PUBLICATION_TYPE SPT, `SERIES` S, COUNTRY C "
     . "WHERE S.COUNTRY_ID=C.ID AND C.NAME='Switzerland' AND SPT.name='magazine'",
-    "SELECT I.PUBLICATION_YEAR, Count(I.id) "// d
-    ."FROM ISSUE I "
-    ."WHERE I.PUBLICATION_YEAR >= 1990 "
-    ."GROUP BY (I.year) "
-    ."ORDER BY I.PUBLICATION_YEAR ASC ",
+    "SELECT I.Publication_Year, Count(I.id) " //d
+    ."FROM ISSUES I "
+    ."WHERE I.Publication_Year  >= 1990 "
+    ."GROUP BY (I.Publication_Year) "
+    ."ORDER BY I.Publication_Year ASC",
     "SELECT I.NAME, COUNT(S.ID) "// e
     ."FROM INDICIA_PUBLISHER I, SERIES S, PUBLISHER P "
     ."WHERE I.NAME LIKE('DC%') AND S.PUBLISHER_ID=P.ID AND I.PUBLISHER_ID=P.ID "
     ."GROUP BY I.NAME ORDER BY COUNT(S.ID) DESC ",
-    "TODO fix query",//f
-    "SELECT SCRIPTS.id, SCRIPTS.name, L.TYPE "//g
-    ."FROM SCRIPTS, LETTERS L "
-    ."WHERE SCRIPTS.name = L.TYPE "
-    ."LIMIT 10 ",
-    "TODO fix query"//h
+    "SELECT S.TITLE, COUNT(SR.ID)"." FROM STORY S JOIN STORY_REPRINT SR ON S.ID=SR.ORIGIN_ID GROUP BY S.TITLE ORDER BY COUNT(SR.ID) DESC LIMIT 10", //f
+    "SELECT "."DISTINCT artist FROM STORY_ARTISTS A JOIN STORY_CHARACTERS SC ON A.artist=SC.character JOIN STORY_ID_SCRIPT SIS ON A.id=SIS.artist_id JOIN STORY_ID_PENCILS SIP ON A.id=SIP.artist_id JOIN STORY_ID_COLORS SIC ON A.id=SIC.artist_id",
+    "SELECT S.title"." AS STORYTITLE, SC.character AS CHARACTERS,FEAT.character AS FEATURE FROM STORY S LEFT JOIN STORY_REPRINT SR ON S.id=SR.origin_id JOIN STORY_ID_CHARACTERS SIC ON SIC.story_id=S.id JOIN STORY_CHARACTERS SC ON SIC.character_id=SC.id JOIN STORY_ID_FEATURE SF ON S.id=SF.story_id JOIN STORY_CHARACTERS FEAT ON SF.feature_id=FEAT.id WHERE SR.origin_id IS NULL AND SC.character = 'Batman' AND FEAT.character != 'Batman' GROUP BY STORYTITLE"//h
 );
 
 if(isset($querynum)){

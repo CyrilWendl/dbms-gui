@@ -1,17 +1,25 @@
 <?php
 // Establish connection
 session_start();
-$dbpass="ahr5moLzTE0(r6A";
-$dbhost="mysql-cdm-51";
-$dbuser="mir";
-$dbname="mir";
+$conn=2; // 1=MIR, 2=LOCAL
+if($conn==1){
+    $dbpass="ahr5moLzTE0(r6A";
+    $dbhost="mysql-cdm-51";
+    $dbuser="mir";
+    $dbname="mir";
+}else{
+    $dbpass="root";
+    $dbhost="localhost";
+    $dbuser="root";
+    $dbname="mir";
+}
 $link = @mysqli_connect($dbhost,$dbuser,$dbpass) or die ("<div class=\"alert alert-danger\">
   <strong>Could not connect to MySQL!</strong> Consider connecting to VPN. 
 </div>");
 @mysqli_select_db($link, $dbname) or die ("<div class=\"alert alert-danger\">
   <strong>No such database</strong> 
 </div>");
-$tables_label=array("Story","Language","Issues", "Indicia Publisher","Publisher","Brand Group");
+$tables_label=array("Story","Language","Issues", "Indicia Publisher","Publisher","Brand Group", "Country");
 
 for($i=0;$i<count($tables_label);$i++) {
     $tables[$i]=str_replace(' ','_',strtoupper($tables_label[$i]));
